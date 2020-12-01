@@ -1,0 +1,65 @@
+$base-color :#e6e5ef;
+$sub-color :#3e3a3a;
+$accent-color :#ced7dc;
+
+html {
+    background-color: $base-color;
+}
+
+::placeholder {
+    text-align: left;
+    color: $sub-color;
+}
+
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+#postArea {
+    height: 80px;
+    width: 640px;
+    right: 20px;
+    bottom: 20px;
+    position: fixed;
+    background-color: $sub-color;
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    #form {
+        margin-left: 20px;
+        float: left;
+    }
+
+    input {
+        border: solid 0;
+        background-color: #fff;
+    }
+
+    #name {
+        height: 20px;
+        margin-top: 10px;
+        padding: 0;
+    }
+
+    #message {
+        width: 500px;
+        height: 30px;
+        margin-top: 10px;
+        padding: 0;
+    }
+
+    #post {
+        height: 30px;
+        width: 60px;
+        margin-top: 40px;
+        margin-left: 40px;
+        padding: 0;
+        float: left;
+        color: $sub-color;
+    }
+}

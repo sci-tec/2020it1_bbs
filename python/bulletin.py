@@ -1,13 +1,20 @@
-from bottle import route, run, template, request
+from bottle import route, run, template, request, static_file
 import fileUtil
 import datetime
+
+@route('/bulletin/css/style.css')
+def css():
+    return static_file('./css/style.css', root='.')
+
+@route("/bulletin/js/app.js")
+def js():
+    return static_file("./js/app.js", root=".")
 
 @route('/bulletin')
 def bulletin():
     currentList = fileUtil.readFile("sample.txt")
 
     return template('index', text = currentList)
-
 
 @route('/bulletin', method='POST')
 def do_hello():
