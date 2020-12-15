@@ -2,25 +2,28 @@ from bottle import route, run, template, request, static_file
 import fileUtil
 import datetime
 
-@route('/bulletin/css/style.css')
+@route('/bbs/css/style.css')
 def css():
     return static_file('./css/style.css', root='.')
 
-@route("/bulletin/js/app.js")
+@route("/bbs/js/app.js")
 def js():
     return static_file("./js/app.js", root=".")
 
-@route('/bulletin')
+@route('/bbs')
 def bulletin():
     currentList = fileUtil.readFile("sample.txt")
 
     return template('index', text = currentList)
 
-@route('/bulletin', method='POST')
+@route('/bbs', method='POST')
 def do_hello():
     name = request.forms.name
     txt = request.forms.message
     timeNum = ""
+
+    if len(name) == 2 and name[0] == "削" and name[1] == "除":
+        fileUtil.writeFile("sample.txt", "")
 
     if len(name) == 0:
         name = "名無しさん"
@@ -28,12 +31,11 @@ def do_hello():
     for time in range(16):
         timeNum += str(datetime.datetime.now())[time]
 
-    currentList = fileUtil.readFile("sample.txt")
-    newList = currentList
     if len(txt) != 0:
-        newList = currentList + "NAME: " + name + '<br>' + "TIME: " + "{}".format(timeNum) + "<br>" + "TEXT: " + txt + "<br><br>"
+        newText = "NAME: " + name + '<br>' + "TIME: " + "{}".format(timeNum) + "<br>" + "TEXT: " + txt + "<br><br>"
+        fileUtil.addNewLine("sample.txt", newText)
 
-    fileUtil.writeFile("sample.txt", newList)
+    newList = fileUtil.readFile("sample.txt")
 
     return template('index', text=newList)
 
