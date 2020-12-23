@@ -29,26 +29,46 @@ def do_hello():
 
     # 使用不可文字の設定
     if re.compile("<|>|/").search("{}{}".format(name, txt)):
-        warningText = "\"<,>,/\"は使用できません。"
+        warningText = "alert('\"<,>,/\"は使用できません。');"
 
     else:
-        # 削除コマンドの実装
-        if len(name) == 2 and "削除" in name:
-            fileUtil.writeFile("sample.txt", "")
+        # コマンド群
+        if len(name) != 0 and name[0] == "@":
 
-        # nameが空欄時 の処理
-        elif len(name) == 0:
-            name = "名無しさん"
+            # 削除
+            if re.compile("ki11").search(name):
+                fileUtil.writeFile("sample.txt", "")
 
-        # messageが空欄時の処理
-        elif len(txt) == 0:
-            warningText = "messageに文字を入力して下さい"
+            # 自動投稿
+            elif re.compile("cr8").search(name):
+                if re.compile(":").search(name):
+                    command, number = name.split(':')
+                    timesNum = int(number)
+
+                for times in range(timesNum):
+                    newText = "NAME: BOT{}<br>TIME:{}<br>TEXT: へろ～～～<br><br>".format(times + 1, timeNum)
+                    fileUtil.addNewLine("sample.txt", newText)
 
         if len(txt) != 0:
+            # nameが空欄時 の処理
+            if len(name) == 0:
+                name = "名無しさん"
+
             newText = "NAME: " + name + '<br>' + "TIME: " + "{}".format(timeNum) + "<br>" + "TEXT: " + txt + "<br><br>"
             fileUtil.addNewLine("sample.txt", newText)
 
+        else:
+            # すべて空欄時
+            if len(name) == 0 or name[0] == "@":
+                warningText = ""
+
+            # messageだけ空欄時
+            else:
+                warningText = "alert('messageに文字を入力して下さい');"
+
     newList = fileUtil.readFile("sample.txt")
+    warningText = "<script>{}</script>".format(warningText)
+
     return template('index', text=newList, alert=warningText)
 
 run(host='localhost', port=8080, debug=True)
