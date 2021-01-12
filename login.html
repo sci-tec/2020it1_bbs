@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bbs/css/style.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+
+<body>
+    <h1>ログイン</h1>
+    <form method="post" action="/bbs">
+        <div class="clearfix">
+            <div id="form">
+                <input type="text" id="userId" name="userId" placeholder="ユーザーID">
+                <input type="text" id="password" name="password" placeholder="パスワード">
+                <input type="button" onclick="location.href='signUp.html'" value="新規登録">
+                <input type="button" onclick="location.href='index.html'" value="ログイン">
+
+                <!-- javascriptの挿入部分 -->
+                {{!hello}}
+                <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+                <script type="text/javascript" src="bbs/js/app.js"></script>
+            </div>
+
+</body>
+
+</html>

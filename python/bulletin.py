@@ -21,7 +21,7 @@ def do_hello():
     name = request.forms.name
     txt = request.forms.message
     timeNum = ""
-    warningText = ""
+    alert = ""
 
     # 時間を実装する
     for time in range(16):
@@ -29,7 +29,7 @@ def do_hello():
 
     # 使用不可文字の設定
     if re.compile("<|>|/").search("{}{}".format(name, txt)):
-        warningText = "alert('\"<,>,/\"は使用できません。');"
+        alert = "alert('\"<,>,/\"は使用できません。');"
 
     else:
         # コマンド群
@@ -46,7 +46,7 @@ def do_hello():
                     timesNum = int(number)
 
                 for times in range(timesNum):
-                    newText = "NAME: BOT{}<br>TIME:{}<br>TEXT: へろ～～～<br><br>".format(times + 1, timeNum)
+                    newText = "NAME: 中本BOT{}<br>TIME:{}<br>TEXT: 蒙古タンメン<br><br>".format(times + 1, timeNum)
                     fileUtil.addNewLine("sample.txt", newText)
 
         if len(txt) != 0:
@@ -60,15 +60,15 @@ def do_hello():
         else:
             # すべて空欄時
             if len(name) == 0 or name[0] == "@":
-                warningText = ""
+                alert = ""
 
             # messageだけ空欄時
             else:
-                warningText = "alert('messageに文字を入力して下さい');"
+                alert = "alert('messageに文字を入力して下さい');"
 
-    newList = fileUtil.readFile("sample.txt")
-    warningText = "<script>{}</script>".format(warningText)
+    text = fileUtil.readFile("sample.txt")
+    alert = "<script>{}</script>".format(alert)
 
-    return template('index', text=newList, alert=warningText)
+    return template('index', text=text, alert=alert)
 
 run(host='localhost', port=8080, debug=True)
