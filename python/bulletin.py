@@ -11,12 +11,32 @@ def css():
 def js():
     return static_file("./js/app.js", root=".")
 
-@route('/bbs')
+@route('/login.html')
+def login():
+    return template('login', hello = "")
+
+@route('/login.html', method="新規登録")
+def doLogin():
+    return template('signUp', userId = "")
+
+@route('/login.html', method="ログイン")
+def doLogin():
+    return template('index', userId = "")
+
+@route('/signUp.html')
+def signUp():
+    return template('signUp', userId = "")
+
+@route('/signUp.html', method="登録")
+def signUp():
+    return template('login', userId = "")
+
+@route('/index.html')
 def bulletin():
     currentList = fileUtil.readFile("sample.txt")
     return template('index', text = currentList, alert = "")
 
-@route('/bbs', method='POST')
+@route('/index.html', method='POST')
 def do_hello():
     name = request.forms.name
     txt = request.forms.message
