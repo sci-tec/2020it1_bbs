@@ -2,6 +2,7 @@ from bottle import route, run, template, request, static_file
 import fileUtil
 import datetime
 import re
+import doData
 
 @route('/bbs/css/style.css')
 def css():
@@ -27,9 +28,14 @@ def doLogin():
 def signUp():
     return template('signUp', userId = "")
 
-@route('/signUp.html', method="登録")
-def signUp():
-    return template('login', userId = "")
+@route('/signUp.html', method="POST")
+def doSignUp():
+    name = request.forms.userName
+    passWord = request.forms.password
+
+    userId = doData.createUser(name, passWord)
+    print("name:",name,"\npassword:", passWord)
+    return template('login', hello = '<script>alert("{}")</script>'.format(userId))
 
 @route('/index.html')
 def bulletin():
