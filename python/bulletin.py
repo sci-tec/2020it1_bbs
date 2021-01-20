@@ -3,6 +3,7 @@ import fileUtil
 import datetime
 import re
 import doData
+import sqlite3
 
 @route('/bbs/css/style.css')
 def css():
@@ -33,9 +34,12 @@ def doSignUp():
     name = request.forms.userName
     passWord = request.forms.password
 
-    userId = doData.createUser(name, passWord)
-    print("name:",name,"\npassword:", passWord)
-    return template('login', hello = '<script>alert("{}")</script>'.format(userId))
+    if (len(name) != 0 and len(passWord) != 0): 
+        userId = doData.createUser(name, passWord)
+        print("name:",name,"\npassword:", passWord)
+        return template('login', hello = '<script>alert("{}")</script>'.format(userId))
+    else:
+        return template('signUp', userId = '未入力の欄があります')
 
 @route('/index.html')
 def bulletin():

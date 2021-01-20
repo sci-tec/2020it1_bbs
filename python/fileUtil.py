@@ -17,11 +17,3 @@ def addNewLine(filename, data):
         raw_data = ""
     raw_data += data + '<br>'
     writeFile(filename, raw_data)
-
-def addNewLineNotag(filename, data):
-    try:
-        raw_data = readFile(filename)
-    except Exception as e:
-        raw_data = ""
-    raw_data += data
-    writeFile(filename, raw_data)
