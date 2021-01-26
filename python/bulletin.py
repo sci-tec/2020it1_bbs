@@ -1,9 +1,14 @@
 from bottle import route, run, template, request, static_file
+from createId import createId
 import fileUtil
 import datetime
 import re
-import doData
 import sqlite3
+import doData
+
+dbname = "USER.db"
+conn = sqlite3.connect(dbname)
+cur = conn.cursor()
 
 @route('/bbs/css/style.css')
 def css():
@@ -23,23 +28,44 @@ def doLogin():
 
 @route('/login.html', method="ログイン")
 def doLogin():
-    return template('index', userId = "")
+    userId = str(request.forms.userId)
+    passWord = str(request.forms.password)
+    result = doData.login(userId, passWord)
+
+    if (result == 0):
+        return template('login', userId = "パスワードが違う")
+    elif (result == 1):
+        return template('login', userId = "ユーザーがいない")
+    return template('index', alert = result)
+    
+    conn.commit()
+    cur.close()
+    conn.close()
 
 @route('/signUp.html')
 def signUp():
     return template('signUp', userId = "")
 
+# 新規登録画面
 @route('/signUp.html', method="POST")
 def doSignUp():
-    name = request.forms.userName
-    passWord = request.forms.password
+    name = str(request.forms.userName)
+    passWord = str(request.forms.password)
 
-    if (len(name) != 0 and len(passWord) != 0): 
-        userId = doData.createUser(name, passWord)
+    if (len(name) != 0 and len(passWord) != 0):
+        if re.compile("<|>|/|_").search("{}{}".format(name, passWord)):
+            return template('signUp', userId = '<, >, /, _, は使用不可')
+        # メインの処理
+        userId = createId()
+        doData.createUser(name, passWord)
+        print(userId)
         print("name:",name,"\npassword:", passWord)
-        return template('login', hello = '<script>alert("{}")</script>'.format(userId))
+        return template('login', hello = '<script>alert(ID: "{}")</script>'.format(userId))
     else:
         return template('signUp', userId = '未入力の欄があります')
+    conn.commit()
+    cur.close()
+    conn.close()
 
 @route('/index.html')
 def bulletin():

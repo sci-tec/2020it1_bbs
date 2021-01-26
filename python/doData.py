@@ -1,62 +1,57 @@
 from createId import createId
+import fileUtil
 import re
-import sqlite3
+
+# テキストデータを辞書データに変換
+def getDict():
+    datas = fileUtil.readFile("data.txt")
+    datas = datas.split("_")
+    dataBase = {}
+    for data in datas:
+        try:
+            rawData = data.split("/")
+            dataBase["{}".format(rawData[0])] = ["{}".format(rawData[1]), "{}".format(rawData[2])]
+        except IndexError:
+            return dataBase
+
+# パスワードとIDを照合する
+def checkData(userId, passWord):
+    datas = getDict()
+    
+    try:
+        if (datas[userId][1] == "{}".format(passWord)):
+            return [True, datas[userId][0]]
+        else:
+            return [False, "パスワードが違う"]
+    except KeyError:
+        return [False, "ユーザーがいない"]
 
 # 新規追加
-def createUser(name, password):
-    dbname = "USER.db"
-    conn = sqlite3.connect(dbname)
-    cur = conn.cursor()
+def createUser(name, passWord):
     userId = createId()
-    cur.execute("INSERT INTO user(userId, name, pass) values('{}', '{}', '{}')".format(userId, name, password))
-    print(userId)
-
+    fileUtil.addNewData("data.txt", "{}/{}/{}_".format(userId, name, passWord))
     return userId
 
-    conn.commit()
-    cur.close()
-    conn.close()
-
-
 # ログイン
-def login(userId, password):
-    dbname = "USER.db"
-    conn = sqlite3.connect(dbname)
-    cur = conn.cursor()
-    
-    cur.execute('SELECT * FROM user where userId == "{}"'.format(userId))
-    data = cur.fetchall()
-    print(data)
-    if (len(data) == 1):
-        if (data[0][2] == password):
-            print("{},ログイン".format(data[0][1]))
-        else:
-            print("パスワードが違う")
+def login(userId, passWord):
+    data = checkData(userId, passWord)
+    if (data[0]):
+        return "{}, ログイン".format(data[1])
     else:
-        print ("ユーザーがいない")
-    
-    conn.commit()
-    cur.close()
-    conn.close()
+        return data[1]
 
 # 削除
-def deliteUser(userId, password):
-    dbname = "USER.db"
-    conn = sqlite3.connect(dbname)
-    cur = conn.cursor()
-
-    cur.execute('SELECT * FROM user where userId == "{}"'.format(userId))
-    data = cur.fetchall()
-    print(data)
-    if (len(data) == 1):
-        if (data[0][2] == password):
-            print("{},削除".format(data[0][1]))
-            cur.execute('DELETE FROM user where userId == "{}"'.format(userId))
-        else:
-            print("パスワードが違う")
+def deliteUser(userId, passWord):
+    setDict = getDict()
+    datas = checkData(userId, passWord)
+    if (datas[0]):
+        return "{}, 削除".format(datas[1])
+        setDict.pop("{}".format(userId))
+        newData = ""
+        for data in setDict:
+            for key in setDict.keys():
+                strKey = str(key)
+                newData += "{}/{}/{}_".format(strKey, setDict[strKey][0], setDict[strKey][1])
+        fileUtil.writeFile("data.txt", newData)
     else:
-        print ("ユーザーがいない")
-
-    conn.commit()
-    cur.close()
-    conn.close()
+        return datas[1]
