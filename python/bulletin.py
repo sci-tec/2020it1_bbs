@@ -20,27 +20,22 @@ def js():
 
 @route('/login.html')
 def login():
-    return template('login', hello = "")
+    return template('login', text = "")
 
 @route('/login.html', method="新規登録")
 def doLogin():
     return template('signUp', userId = "")
 
-@route('/login.html', method="ログイン")
-def doLogin():
+# ログイン処理
+@route('/login.html', method="POST")
+def login():
     userId = str(request.forms.userId)
-    passWord = str(request.forms.password)
-    result = doData.login(userId, passWord)
-
-    if (result == 0):
-        return template('login', userId = "パスワードが違う")
-    elif (result == 1):
-        return template('login', userId = "ユーザーがいない")
-    return template('index', alert = result)
-    
-    conn.commit()
-    cur.close()
-    conn.close()
+    passWord = str(request.forms.passWord)
+    result = doData.checkData(userId, passWord)
+    if (result[0]):
+        return template('index', text = "{}, ログイン".format(result[1]), alert = "")
+    else:
+        return template('login', text = result[1])
 
 @route('/signUp.html')
 def signUp():
@@ -50,7 +45,7 @@ def signUp():
 @route('/signUp.html', method="POST")
 def doSignUp():
     name = str(request.forms.userName)
-    passWord = str(request.forms.password)
+    passWord = str(request.forms.passWord)
 
     if (len(name) != 0 and len(passWord) != 0):
         if re.compile("<|>|/|_").search("{}{}".format(name, passWord)):
@@ -59,13 +54,10 @@ def doSignUp():
         userId = createId()
         doData.createUser(name, passWord)
         print(userId)
-        print("name:",name,"\npassword:", passWord)
-        return template('login', hello = '<script>alert(ID: "{}")</script>'.format(userId))
+        print("name:",name,"\npassWord:", passWord)
+        return template('login', text = '<script>alert("ID: {}")</script>'.format(userId))
     else:
         return template('signUp', userId = '未入力の欄があります')
-    conn.commit()
-    cur.close()
-    conn.close()
 
 @route('/index.html')
 def bulletin():

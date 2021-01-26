@@ -1,26 +1,50 @@
 from createId import createId
-import fileUtil
 import re
+import sqlite3
 
-# テキストデータを辞書データに変換
+# データベースの中身を確認
+def showData():
+    dbname = "USER.db"
+    conn = sqlite3.connect(dbname)
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM user')
+    print(cur.fetchall())
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+# データベースからデータを取り出す
+def getData():
+    dbname = "USER.db"
+    conn = sqlite3.connect(dbname)
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM user')
+    datas = cur.fetchall()
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return datas
+
+# データベースを辞書データに変換
 def getDict():
-    datas = fileUtil.readFile("data.txt")
-    datas = datas.split("_")
-    dataBase = {}
-    for data in datas:
-        try:
-            rawData = data.split("/")
-            dataBase["{}".format(rawData[0])] = ["{}".format(rawData[1]), "{}".format(rawData[2])]
-        except IndexError:
-            return dataBase
+    datas = getData()
+    dataDict = {}
 
-# パスワードとIDを照合する
+    for data in datas:
+        dataDict[data[0]] = [str(data[1]), str(data[2])]
+
+    return dataDict
+
+# パスワードとIDを照合
 def checkData(userId, passWord):
-    datas = getDict()
-    
+    dataDict = getDict()
+
     try:
-        if (datas[userId][1] == "{}".format(passWord)):
-            return [True, datas[userId][0]]
+        if (dataDict[userId][1] == passWord):
+            return [True, dataDict[userId][0]]
         else:
             return [False, "パスワードが違う"]
     except KeyError:
@@ -28,30 +52,44 @@ def checkData(userId, passWord):
 
 # 新規追加
 def createUser(name, passWord):
+    dbname = "USER.db"
+    conn = sqlite3.connect(dbname)
+    cur = conn.cursor()
     userId = createId()
-    fileUtil.addNewData("data.txt", "{}/{}/{}_".format(userId, name, passWord))
+    cur.execute("INSERT INTO user(userId, name, pass) values('{}', '{}', '{}')".format(userId, name, passWord))
+    print(userId)
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
     return userId
 
 # ログイン
 def login(userId, passWord):
-    data = checkData(userId, passWord)
-    if (data[0]):
-        return "{}, ログイン".format(data[1])
+    result = checkData(userId, passWord)
+
+    if (result[0]):
+        return "{}, ログイン".format(result[1])
     else:
-        return data[1]
+        return result[1]
 
 # 削除
-def deliteUser(userId, passWord):
-    setDict = getDict()
-    datas = checkData(userId, passWord)
-    if (datas[0]):
-        return "{}, 削除".format(datas[1])
-        setDict.pop("{}".format(userId))
-        newData = ""
-        for data in setDict:
-            for key in setDict.keys():
-                strKey = str(key)
-                newData += "{}/{}/{}_".format(strKey, setDict[strKey][0], setDict[strKey][1])
-        fileUtil.writeFile("data.txt", newData)
+def deleteUser(userId, passWord):
+    dbname = "USER.db"
+    conn = sqlite3.connect(dbname)
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM user where userId == "{}"'.format(userId))
+    data = cur.fetchall()
+
+    if (result[0]):
+        return "{}, 削除".format(result[1])
+        cur.execute('DELETE FROM user where userId == "{}"'.format(userId))
     else:
-        return datas[1]
+        return result[1]
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+showData()

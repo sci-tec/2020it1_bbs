@@ -10,17 +10,19 @@
 
 <body>
     <h1>ログイン</h1>
-    <form method="post" action="/index.html">
+    <form method="post" action="/login.html">
         <div class="clearfix">
             <div id="form">
                 <input type="text" id="userId" name="userId" placeholder="ユーザーID">
                 <input type="text" id="passWord" name="passWord" placeholder="パスワード">
                 <input type="button" onclick="location.href='signUp.html'" value="新規登録">
-                <input type="submit" id="post" value="POST">
-
-                <!-- javascriptの挿入部分 -->
-                {{!hello}}
+                <input type="submit" onclick="location.href='index.html'" id= "post" value="POST">
             </div>
+        </div>
+    </form>
+    <!-- javascriptの挿入部分 -->
+    {{!text}}
+
 
 </body>
 
