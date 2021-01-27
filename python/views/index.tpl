@@ -15,11 +15,10 @@
 
         {{!alert}}
         <div id="postArea">
-            <form method="post" action="/index.html">
+            <form method="post" action="/index/{{userName}}">
                 <div class="clearfix">
                     <div id="form">
                         <ul>
-
                             <input type="text" id="name" name="name" placeholder="name">
                         </ul>
                         <ul>

@@ -4,7 +4,7 @@ import sqlite3
 
 # データベースの中身を確認
 def showData():
-    dbname = "USER.db"
+    dbname = "python/USER.db"
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
     cur.execute('SELECT * FROM user')
@@ -16,7 +16,7 @@ def showData():
 
 # データベースからデータを取り出す
 def getData():
-    dbname = "USER.db"
+    dbname = "python/USER.db"
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
     cur.execute('SELECT * FROM user')
@@ -52,7 +52,7 @@ def checkData(userId, passWord):
 
 # 新規追加
 def createUser(name, passWord):
-    dbname = "USER.db"
+    dbname = "python/USER.db"
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
     userId = createId()
@@ -76,7 +76,7 @@ def login(userId, passWord):
 
 # 削除
 def deleteUser(userId, passWord):
-    dbname = "USER.db"
+    dbname = "python/USER.db"
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
     cur.execute('SELECT * FROM user where userId == "{}"'.format(userId))
@@ -91,5 +91,3 @@ def deleteUser(userId, passWord):
     conn.commit()
     cur.close()
     conn.close()
-
-showData()
