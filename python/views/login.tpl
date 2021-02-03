@@ -14,7 +14,7 @@
         <div class="clearfix">
             <div id="form">
                 <input type="text" id="userId" name="userId" placeholder="ユーザーID">
-                <input type="text" id="passWord" name="passWord" placeholder="パスワード">
+                <input type="password" id="passWord" name="passWord" placeholder="パスワード">
                 <input type="button" onclick="location.href='signUp'" value="新規登録">
                 <input type="submit" onclick="location.href='index'" id= "post" value="POST">
             </div>
