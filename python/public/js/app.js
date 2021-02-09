@@ -1,2 +1,2 @@
-let target = document.getElementById('scrollInner');
+let target = document.getElementById('wrapper');
 target.scrollIntoView(false);

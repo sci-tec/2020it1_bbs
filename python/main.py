@@ -4,13 +4,13 @@ import re
 import sqlite3
 import doData
 
-@route('/static/css/style.css')
-def css():
-    return static_file('css/style.css', root='./static')
+@route('/static/css/<file_path:path>')
+def css(file_path):
+    return static_file(file_path, root='python/public/css')
 
-@route("/static/js/app.js")
-def js():
-    return static_file("/js/app.js", root="./static")
+@route('/static/js/<file_path:path>')
+def js(file_path):
+    return static_file(file_path, root='python/public/js')
 
 @route('/')
 def login():
@@ -50,21 +50,25 @@ def doSignUp():
     else:
         return template('python/views/signUp', userId = '未入力の欄があります')
 
+# オープンチャット最初
 @route('/index/<userName>/<userId>')
 def index(userName, userId):
     table = "talk"
+    db = "USER"
     url = "{}/{}".format(userName, userId)
-    text = doData.getTalk(table)
+    text = doData.getTalk("USER", table)
+
     return template('python/views/index', text = text, alert = "", userName = userName, url = url)
 
+# オープンチャットpost後
 @route('/index/<userName>/<userId>', method='POST')
 def doIndex(userName, userId):
     txt = str(request.forms.message)
     dm = str(request.forms.userId)
-    timeNum = ""
-    alert = ""
-    name = userName
+    timeNum = str(datetime.datetime.now())[0:16]
+    db = "USER"
     table = "talk"
+    alert = ""
 
     if (len(dm) == len(txt) == 0):
         alert = "文字を入力してください"
@@ -88,10 +92,7 @@ def doIndex(userName, userId):
             alert = "ユーザーがいない"
 
     else:
-
-        # 時間を実装する
-        for time in range(16):
-            timeNum += str(datetime.datetime.now())[time]
+            
 
         # 使用不可文字の設定
         if re.compile("<|>|/").search(txt):
@@ -101,49 +102,48 @@ def doIndex(userName, userId):
             alert = "テキストが入力されてない"
 
         else:
-            doData.addChat(table, userName, timeNum, txt)
+            doData.addChat(db, table, userName, timeNum, txt)
 
-    text = doData.getTalk(table)
+    text = doData.getTalk("USER", table)
     url = "{}/{}".format(userName, userId)
 
     return template('python/views/index', text = text, alert = alert, userName = userName, url = url)
 
+# DM最初
 @route('/index/<userName>/<userId>/<table>')
 def indexDm(userName, userId, table):
     txt = str(request.forms.message)
     dm = str(request.forms.userId)
-    timeNum = ""
-    alert = ""
-    name = userName
+    
     tableName = "_{}_".format(str(table))
+    timeNum = str(datetime.datetime.now())[0:16]
+    alert = ""
 
-    text = doData.getTalk(tableName)
+    text = doData.getTalk("DM", tableName)
     url = "{}/{}/{}".format(userName, userId, table)
 
     return template('python/views/index', text = text, alert = alert, userName = userName, url = url)
 
+# DM,POST後
 @route('/index/<userName>/<userId>/<table>', method='POST')
 def indexDm(userName, userId, table):
     txt = str(request.forms.message)
     dm = str(request.forms.userId)
-    timeNum = ""
+    timeNum = str(datetime.datetime.now())[0:16]
     alert = ""
-    name = userName
     tableName = "_{}_".format(str(table))
-
-    # 時間を実装する
-    for time in range(16):
-        timeNum += str(datetime.datetime.now())[time]
     
     # 使用不可文字の設定
     if re.compile("<|>|/").search(txt):
         alert = "\"<,>,/\"は使用できません。"
+
     elif (len(txt) == 0):
         alert = "テキストが入力されてない"
-    else:
-        doData.addChat(tableName , userName, timeNum, txt)
 
-    text = doData.getTalk(tableName)
+    else:
+        doData.addChat("DM", tableName, userName, timeNum, txt)
+
+    text = doData.getTalk("DM", tableName)
     url = "{}/{}/{}".format(userName, userId, table)
 
     return template('python/views/index', text = text, alert = alert, userName = userName, url = url)

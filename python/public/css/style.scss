@@ -1,65 +1,42 @@
-$base-color :#e6e5ef;
-$sub-color :#3e3a3a;
-$accent-color :#ced7dc;
-
-html {
-    background-color: $base-color;
+#wrapper {
+    position: relative;
 }
 
-::placeholder {
-    text-align: left;
-    color: $sub-color;
-}
-
-.clearfix::after {
-    content: "";
-    display: block;
-    clear: both;
-}
-
-#postArea {
-    height: 80px;
-    width: 640px;
-    right: 20px;
-    bottom: 20px;
+#form {
+    position: absolute;
     position: fixed;
-    background-color: $sub-color;
+    width: 40%;
+    height: 40%;
+    top: 30%;
+    left: 50%;
+    border: 1px solid #aaa;
+    transform: translateY(-50%) translateX(-50%);
 
-    ul {
-        margin: 0;
-        padding: 0;
+    h1 {
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 10px;
+        text-align: center;
     }
 
-    #form {
-        margin-left: 20px;
-        float: left;
-    }
+    #input {
+        padding-top: 10px;
+        text-align: center;
 
-    input {
-        border: solid 0;
-        background-color: #fff;
-    }
+        input {
+            margin-bottom: 10px;
+            width: 70%;
+            padding: 10px;
+        }
 
-    #name {
-        height: 20px;
-        margin-top: 10px;
-        padding: 0;
+        #post {
+            margin-top: 10px;
+            margin-right: 37%;
+            width: 15%;
+        }
     }
+}
 
-    #message {
-        width: 500px;
-        height: 30px;
-        margin-top: 10px;
-        padding: 0;
-    }
-
-    #post {
-        height: 30px;
-        width: 60px;
-        margin-top: 40px;
-        margin-left: 40px;
-        padding: 0;
-        float: left;
-        color: $sub-color;
-    }
+#alert {
+    color: red;
+    background-color: rgb(250, 177, 177);
 }

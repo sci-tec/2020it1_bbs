@@ -3,26 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="bbs/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>ログインページ</title>
 </head>
 
 <body>
-    <h1>ログイン</h1>
-    <form method="post" action="/">
-        <div class="clearfix">
-            <div id="form">
-                <input type="text" id="userId" name="userId" placeholder="ユーザーID">
-                <input type="password" id="passWord" name="passWord" placeholder="パスワード">
-                <input type="button" onclick="location.href='signUp'" value="新規登録">
-                <input type="submit" onclick="location.href='index'" id= "post" value="POST">
-            </div>
+    <div id="wrapper">
+        <div id="form">
+            <h1>ログイン</h1>
+            <form method="post" action="/">
+                <div id="input">
+                    <input type="text" id="userId" name="userId" placeholder="ユーザーID">
+                    <br>
+                    <input type="password" id="passWord" name="passWord" placeholder="パスワード">
+                    <br>
+                    <input type="submit" onclick="location.href='index'" id="post" value="ログイン">
+                    <a href="signUp" id="url">新規登録はこちら</a>
+                </div>
+            </form>
         </div>
-    </form>
-    <!-- javascriptの挿入部分 -->
-    {{!text}}
+    </div>
 
+    <div id="alert">
+        {{!text}}
+    </div>
 
 </body>
 

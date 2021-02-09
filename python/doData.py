@@ -9,8 +9,8 @@ def getId():
     return "".join(secrets.choice(chars) for x in range(12))
 
 # データベースからデータを取り出す
-def getData(table):
-    dbname = "python/USER.db"
+def getData(db, table):
+    dbname = "python/{}.db".format(db)
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
     cur.execute('SELECT * FROM {}'.format(table))
@@ -35,8 +35,8 @@ def showData(table):
     conn.close()
 
 # データベースを辞書データに変換
-def getDict():
-    datas = getData("user")
+def getDict(db, table):
+    datas = getData(db, table)
     dataDict = {}
 
     for data in datas:
@@ -46,7 +46,7 @@ def getDict():
 
 # パスワードとIDを照合
 def checkData(userId, passWord):
-    dataDict = getDict()
+    dataDict = getDict("USER", "user")
 
     try:
         if (dataDict[userId][1] == passWord):
@@ -89,8 +89,8 @@ def deleteUser(userId, passWord):
     conn.close()
 
 # talkの情報を追加
-def addChat(table, name, time, text):
-    dbname = "python/USER.db"
+def addChat(db, table, name, time, text):
+    dbname = "python/{}.db".format(db)
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
     cur.execute("INSERT INTO {}(name, time, text) values('{}', '{}', '{}')".format(table, name, time, text))
@@ -100,9 +100,9 @@ def addChat(table, name, time, text):
     conn.close()
 
 # talkデータをタイムライン風に変換
-def getTalk(table):
+def getTalk(db, table):
     chat = ""
-    datas = getData(table)
+    datas = getData(db, table)
 
     for data in datas:
         chat += "NAME: {}<br>TIME: {}<br>TEXT: {}<br><br>".format(data[0], data[1], data[2])
@@ -111,7 +111,7 @@ def getTalk(table):
 
 # 新しいテーブルを制作,既存のものがあれば何もしない
 def makeTable(userId1, userId2):
-    dbname = "python/USER.db"
+    dbname = "python/DM.db"
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
 
@@ -122,15 +122,16 @@ def makeTable(userId1, userId2):
         id1, id2 = userId2, userId1
 
     idName = "{}{}".format(id1, id2)
-    
+
     try:
         cur.execute('create table _{}_(name, time, text)'.format(idName))
 
         return [True, "作成", idName]
+
     except sqlite3.OperationalError:
 
         return [False, "既存", idName]
-    
+
     conn.commit()
     cur.close()
     conn.close()
