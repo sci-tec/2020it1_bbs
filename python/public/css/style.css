@@ -1,0 +1,44 @@
+#wrapper {
+  position: relative;
+}
+
+#form {
+  position: absolute;
+  position: fixed;
+  width: 40%;
+  height: 40%;
+  top: 30%;
+  left: 50%;
+  border: 1px solid #aaa;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+          transform: translateY(-50%) translateX(-50%);
+}
+
+#form h1 {
+  border-bottom: 1px solid #aaa;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+#form #input {
+  padding-top: 10px;
+  text-align: center;
+}
+
+#form #input input {
+  margin-bottom: 10px;
+  width: 70%;
+  padding: 10px;
+}
+
+#form #input #post {
+  margin-top: 10px;
+  margin-right: 37%;
+  width: 15%;
+}
+
+#alert {
+  color: red;
+  background-color: #fab1b1;
+}
+/*# sourceMappingURL=style.css.map */

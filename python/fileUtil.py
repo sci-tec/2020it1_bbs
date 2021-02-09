@@ -15,5 +15,5 @@ def addNewLine(filename, data):
         raw_data = readFile(filename)
     except Exception as e:
         raw_data = ""
-    raw_data += data + "\n"
+    raw_data += data + '<br>'
     writeFile(filename, raw_data)

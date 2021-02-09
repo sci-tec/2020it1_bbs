@@ -1,0 +1,42 @@
+#wrapper {
+    position: relative;
+}
+
+#input {
+    position: absolute;
+    position: fixed;
+    border: 1px solid #aaa;
+    bottom: 5%;
+    width: 65%;
+    height: 10%;
+    right: 5%;
+
+
+
+    #message {
+        margin-left: 5%;
+        margin-top: 1.5%;
+        width: 70%;
+        height: 40%;
+    }
+
+    #post {
+        margin-left: 5%;
+        width: 10%;
+        height: 50%;
+    }
+
+    #dmForm {
+        margin-left: 5%;
+        margin-top: 1.5%;
+        width: 70%;
+        height: 40%;
+        border-bottom: 1px solid #aaa;
+    }
+    
+}
+
+#alert {
+    color: red;
+    background-color: rgb(250, 177, 177);
+}

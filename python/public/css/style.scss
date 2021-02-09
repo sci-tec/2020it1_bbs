@@ -1,0 +1,42 @@
+#wrapper {
+    position: relative;
+}
+
+#form {
+    position: absolute;
+    position: fixed;
+    width: 40%;
+    height: 40%;
+    top: 30%;
+    left: 50%;
+    border: 1px solid #aaa;
+    transform: translateY(-50%) translateX(-50%);
+
+    h1 {
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 10px;
+        text-align: center;
+    }
+
+    #input {
+        padding-top: 10px;
+        text-align: center;
+
+        input {
+            margin-bottom: 10px;
+            width: 70%;
+            padding: 10px;
+        }
+
+        #post {
+            margin-top: 10px;
+            margin-right: 37%;
+            width: 15%;
+        }
+    }
+}
+
+#alert {
+    color: red;
+    background-color: rgb(250, 177, 177);
+}
