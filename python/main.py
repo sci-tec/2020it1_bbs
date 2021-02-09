@@ -36,16 +36,19 @@ def signUp():
 @route('/signUp', method="POST")
 def doSignUp():
     name = str(request.forms.userName)
-    passWord = str(request.forms.passWord)
+    passWord1 = str(request.forms.passWord1)
+    passWord2 = str(request.forms.passWord2)
 
-    if (len(name) != 0 and len(passWord) != 0):
-        if re.compile("<|>|/").search("{}{}".format(name, passWord)):
+    if (len(name) != 0 and len(passWord1) != 0 and len(passWord2) != 0):
+        if re.compile("<|>|/").search("{}{}{}".format(name, passWord1, passWord2)):
             return template('python/views/signUp', userId = '<, >, / は使用不可')
+        elif (passWord1 != passWord2):
+            return template('python/views/signUp', userId = 'パスワードが異なります')
     
         # メインの処理
-        userId = doData.createUser(name, passWord)
+        userId = doData.createUser(name, passWord1)
         print(userId)
-        print("name:",name,"\npassWord:", passWord)
+        print("name:",name,"\npassWord:", passWord1)
         return template('python/views/login', text = '<script>alert("ID: {}")</script>'.format(userId))
     else:
         return template('python/views/signUp', userId = '未入力の欄があります')

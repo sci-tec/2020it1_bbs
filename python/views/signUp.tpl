@@ -16,7 +16,9 @@
                 <div id="input">
                     <input type="text" id="userName" name="userName" placeholder="ユーザーネーム">
                     <br>
-                    <input type="password" id="passWord" name="passWord" placeholder="パスワード">
+                    <input type="password" id="passWord" name="passWord1" placeholder="パスワード">
+                    <br>
+                    <input type="password" id="passWord" name="passWord2" placeholder="パスワード（確認用）">
                     <br>
                     <input type="submit" onclick="location.href='/'" id="post" value="新規登録">
                     <a href="/" id="url">前に戻る</a>
